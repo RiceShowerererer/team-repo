@@ -1,0 +1,6 @@
+# 技能代码所有者
+# 每个技能目录配置主、备两名 Owner
+# GitHub 不会将 PR 作者本人自动加入评审人，因此需要两名 Owner 互相评审
+
+.trae/skills/boss-reply/      @RiceShowerererer @MiYuyuyuyu
+.trae/skills/weekly-report/   @RiceShowerererer @MiYuyuyuyu

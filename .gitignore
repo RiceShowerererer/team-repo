@@ -1,0 +1,12 @@
+# 环境变量与密钥（禁止入库）
+.env
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# macOS
+.DS_Store

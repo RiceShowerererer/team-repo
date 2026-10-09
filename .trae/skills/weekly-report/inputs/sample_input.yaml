@@ -1,0 +1,12 @@
+# 手填原型输入示例（产品姚雨杉 / metrics / 当前版本字段位）
+week: "2026-W39"
+name: 姚雨杉
+role: 产品
+standard:
+  this_week_done: "完成 v3.2 需求评审，输出首页改版 PRD 终稿"
+  next_week_plan: "跟进开发排期，组织周三交互走查"
+  blockers: "数据口径未与运营对齐，DAU 统计范围有分歧"
+  support_needed: "请运营在周二前确认渠道数据口径"
+custom:
+  DAU: "12.4 万（环比 +3.1%）"
+  留存: "次日 41%，7 日 22%"
