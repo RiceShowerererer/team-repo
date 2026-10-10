@@ -15,7 +15,7 @@ except ImportError:
     sys.exit(2)
 
 SKILL_DIR = Path(__file__).resolve().parent.parent
-EXPECTED_STANDARD = {"this_week_done", "next_week_plan", "blockers", "support_needed"}
+EXPECTED_STANDARD = {"this_week_done", "next_week_plan", "blockers", "support_needed", "work_hours_summary"}
 
 
 def load_yaml(rel):
@@ -44,6 +44,14 @@ def run_case(case):
             return False, "未知 profile 未报错"
         except FileNotFoundError:
             return True, "未知 profile 正确拒绝（负向）"
+    if t == "negative_missing_required_field":
+        schema = load_yaml(f"schemas/{case['schema']}.yaml")
+        field = next((f for f in schema["fields"] if f["key"] == case["field"]), None)
+        if field is None:
+            return False, f"{case['field']} 字段定义缺失"
+        if field.get("required") is not True:
+            return False, f"{case['field']} 未声明 required: true"
+        return True, f"{case['field']} 为必填字段，缺失即违反契约，必须中断（负向）"
     if t == "template_render":
         tpl = (SKILL_DIR / "templates" / "weekly.md").read_text(encoding="utf-8")
         sample = {k: "x" for k in EXPECTED_STANDARD}

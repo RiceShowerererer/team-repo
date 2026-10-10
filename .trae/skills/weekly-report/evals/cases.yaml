@@ -1,10 +1,10 @@
-# weekly-report 评测用例（结构性校验，共 6 条，含 1 条负向）
+# weekly-report 评测用例（结构性校验，共 8 条，含 2 条负向）
 # 跑法：python3 scripts/run_evals.py
 # 规则：老用例全绿才许合并；加字段时在分支上补新用例（如后续的 w03），用例数随之增加。
 
 cases:
   - id: w01_standard_four_fields
-    desc: 标准版恰好包含四个必填字段
+    desc: 标准版恰好包含五个必填字段（含工时汇总）
     type: standard_fields
 
   - id: w02_metrics_v1_compat
@@ -33,3 +33,15 @@ cases:
   - id: w07_template_render
     desc: 模板能被标准版四字段完整渲染（无残留占位符）
     type: template_render
+
+  - id: w08_metrics_work_hours_summary   # 正向
+    desc: metrics profile 含工时汇总字段位（work_hours_summary）
+    type: profile_has_fields
+    profile: metrics
+    fields: [work_hours_summary]
+
+  - id: w09_negative_missing_work_hours   # 负向
+    desc: 工时汇总在标准版中为必填，输入缺该字段时必须报错中断，不许静默渲染
+    type: negative_missing_required_field
+    schema: standard
+    field: work_hours_summary

@@ -1,4 +1,4 @@
-# 标准版 —— 人人一致的四字段（真共性进标准版）
+# 标准版 —— 人人一致的五字段（真共性进标准版）
 version: "1.0"
 fields:
   - key: this_week_done
@@ -12,4 +12,7 @@ fields:
     required: true
   - key: support_needed
     label: 需要支持
+    required: true
+  - key: work_hours_summary
+    label: 工时汇总
     required: true
