@@ -5,6 +5,7 @@ weekly-report 技能评测脚本（确定性、结构性校验，不调用模型
 规则：改技能先保证全部老用例全绿；加字段必须同步补用例，用例数随之增加。
 """
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -51,7 +52,25 @@ def run_case(case):
             return False, f"{case['field']} 字段定义缺失"
         if field.get("required") is not True:
             return False, f"{case['field']} 未声明 required: true"
-        return True, f"{case['field']} 为必填字段，缺失即违反契约，必须中断（负向）"
+        # 端到端负向：构造缺该必填字段的输入，跑生成脚本必须报错中断
+        sample_file = SKILL_DIR / "inputs" / "sample_input.yaml"
+        sample_data = yaml.safe_load(sample_file.read_text(encoding="utf-8"))
+        sample_data.setdefault("standard", {}).pop(case["field"], None)
+        tmp = SKILL_DIR / "inputs" / ".tmp_missing_field.yaml"
+        tmp.write_text(yaml.safe_dump(sample_data, allow_unicode=True, sort_keys=False), encoding="utf-8")
+        try:
+            proc = subprocess.run(
+                [sys.executable, str(SKILL_DIR / "scripts" / "fetch_inputs.py"),
+                 "--input", str(tmp), "--profile", "metrics"],
+                capture_output=True, text=True, timeout=30,
+            )
+        finally:
+            tmp.unlink(missing_ok=True)
+        if proc.returncode == 0:
+            return False, f"缺 {case['field']} 时生成脚本未报错，静默渲染了"
+        if case["field"] not in (proc.stderr + proc.stdout):
+            return False, f"报错信息未指名字段 {case['field']}：{proc.stderr.strip() or proc.stdout.strip()}"
+        return True, f"缺 {case['field']} 时生成脚本正确报错中断（负向）"
     if t == "template_render":
         tpl = (SKILL_DIR / "templates" / "weekly.md").read_text(encoding="utf-8")
         sample = {k: "x" for k in EXPECTED_STANDARD}

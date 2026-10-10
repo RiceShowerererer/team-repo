@@ -31,7 +31,7 @@ cases:
     profile: not_exist
 
   - id: w07_template_render
-    desc: 模板能被标准版四字段完整渲染（无残留占位符）
+    desc: 模板能被标准版五字段完整渲染（无残留占位符）
     type: template_render
 
   - id: w08_metrics_work_hours_summary   # 正向

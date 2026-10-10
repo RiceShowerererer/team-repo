@@ -29,14 +29,20 @@ def main():
         raise SystemExit(f"未知 profile：{args.profile}（负向规则：不许静默编一个）")
     pname = yaml.safe_load(profile_path.read_text(encoding="utf-8"))["name"]
 
+    schema = yaml.safe_load((SKILL_DIR / "schemas" / "standard.yaml").read_text(encoding="utf-8"))
+    std = data.get("standard") or {}
+    missing = [f["key"] for f in schema["fields"] if f.get("required") and not std.get(f["key"])]
+    if missing:
+        raise SystemExit(f"输入缺少必填字段：{', '.join(missing)}（契约：必填字段缺失必须中断，不许静默渲染）")
+
     tpl = (SKILL_DIR / "templates" / "weekly.md").read_text(encoding="utf-8")
-    std = data["standard"]
     custom = "\n".join(f"- **{k}**：{v}" for k, v in data.get("custom", {}).items())
     mapping = {
         "week": data.get("week", ""), "name": data.get("name", ""), "role": data.get("role", ""),
         "profile_name": pname,
         "this_week_done": std["this_week_done"], "next_week_plan": std["next_week_plan"],
         "blockers": std["blockers"], "support_needed": std["support_needed"],
+        "work_hours_summary": std["work_hours_summary"],
         "custom_block": custom,
     }
     print(re.sub(r"{{\s*(\w+)\s*}}", lambda m: str(mapping.get(m.group(1), "")), tpl))
