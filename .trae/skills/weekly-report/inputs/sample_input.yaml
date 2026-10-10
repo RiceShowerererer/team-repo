@@ -7,6 +7,7 @@ standard:
   next_week_plan: "跟进开发排期，组织周三交互走查"
   blockers: "数据口径未与运营对齐，DAU 统计范围有分歧"
   support_needed: "请运营在周二前确认渠道数据口径"
+  work_hours_summary: "本周工时合计 42 小时（明细：PRD 撰写 16h、评审会议 10h、数据对齐 8h、其他 8h）"
 custom:
   DAU: "12.4 万（环比 +3.1%）"
   留存: "次日 41%，7 日 22%"

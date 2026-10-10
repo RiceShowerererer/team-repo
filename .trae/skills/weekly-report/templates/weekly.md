@@ -6,6 +6,7 @@
 - **下周计划**：{{next_week_plan}}
 - **阻塞**：{{blockers}}
 - **需要支持**：{{support_needed}}
+- **工时汇总**：{{work_hours_summary}}
 
 ## 定制层 · {{profile_name}}
 

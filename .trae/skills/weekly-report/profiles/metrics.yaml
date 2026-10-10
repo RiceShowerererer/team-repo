@@ -1,4 +1,4 @@
-# profile: 数据指标（当前版本：产品视角，DAU / 留存两个字段位）
+# profile: 数据指标（当前版本：产品视角，DAU / 留存 / 工时汇总三个字段位）
 profile: metrics
 name: 数据指标
 version: "1.0"
@@ -9,3 +9,7 @@ fields:
   - key: retention
     label: 留存
     owner_roles: [产品]
+  - key: work_hours_summary
+    label: 工时汇总
+    owner_roles: [产品]
+    placeholder: "本周工时合计 X 小时（明细：__）"   # 字段值占位，待取数填充
